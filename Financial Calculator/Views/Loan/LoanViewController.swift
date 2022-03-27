@@ -26,12 +26,13 @@ class LoanViewController: UIViewController {
     }
     
         func checkFunction() {
-            if (loan_amount.text?.isEmpty == true && interest.text?.isEmpty == false && monthly_payment.text?.isEmpty == false && numberOf_paymnets.text?.isEmpty == false) {
+             if (loan_amount.text?.isEmpty == false && interest.text?.isEmpty == true && monthly_payment.text?.isEmpty == false && numberOf_paymnets.text?.isEmpty == false) {
+                 worning_lbl.text = "Plase Enter interest"
+             }
+           else if (loan_amount.text?.isEmpty == true && interest.text?.isEmpty == false && monthly_payment.text?.isEmpty == false && numberOf_paymnets.text?.isEmpty == false) {
                 getLoanAmount()
             }
-           else if (loan_amount.text?.isEmpty == false && interest.text?.isEmpty == true && monthly_payment.text?.isEmpty == false && numberOf_paymnets.text?.isEmpty == false) {
-                worning_lbl.text = "Plase Enter interest"
-            }
+
            else if (loan_amount.text?.isEmpty == false && interest.text?.isEmpty == false && monthly_payment.text?.isEmpty == true && numberOf_paymnets.text?.isEmpty == false) {
                 getmonthlyPayment()
             }
@@ -56,18 +57,18 @@ class LoanViewController: UIViewController {
 
    func getLoanAmount() {
         
-       guard let loanAmount = loan_amount.text else { return }
+       guard loan_amount.text != nil else { return }
        guard let interestAmount = interest.text else { return }
        guard let monthlyAmount = monthly_payment.text else { return }
        guard let numberOfPaymnets = numberOf_paymnets.text else { return }
        
        //var LA = Double(loanAmount)!
-       var i = Double(interestAmount)!
-       var MP = Double(monthlyAmount)!
-       var NOP = Double(numberOfPaymnets)!
+       let i = Double(interestAmount)!
+       let MP = Double(monthlyAmount)!
+       let NOP = Double(numberOfPaymnets)!
        
        
-       var LA = round((MP / (i / 1200)) * (1 - (1 / pow(1 + (i/1200), NOP))))
+       let LA = round((MP / (i / 1200)) * (1 - (1 / pow(1 + (i/1200), NOP))))
        
        loan_amount.text = String(LA)
        
@@ -75,34 +76,34 @@ class LoanViewController: UIViewController {
     
     func getInterest(){
         guard let loanAmount = loan_amount.text else { return }
-        guard let interestAmount = interest.text else { return }
+        guard interest.text != nil else { return }
         guard let monthlyAmount = monthly_payment.text else { return }
         guard let numberOfPaymnets = numberOf_paymnets.text else { return }
         
-        var LA = Double(loanAmount)!
+        _ = Double(loanAmount)!
        // var i = Double(interestAmount)!
-        var MP = Double(monthlyAmount)!
-        var NOP = Double(numberOfPaymnets)!
+        _ = Double(monthlyAmount)!
+        _ = Double(numberOfPaymnets)!
         
         
-        var i = round(log(8.0))
+        _ = round(log(8.0) * 100)
         
-        interest.text = String(log(8.0))
+        interest.text = String(log(8.0) / 100)
     }
     
     func getmonthlyPayment(){
         guard let loanAmount = loan_amount.text else { return }
         guard let interestAmount = interest.text else { return }
-        guard let monthlyAmount = monthly_payment.text else { return }
+        guard monthly_payment.text != nil else { return }
         guard let numberOfPaymnets = numberOf_paymnets.text else { return }
         
-        var LA = Double(loanAmount)!
-        var i = Double(interestAmount)!
+        let LA = Double(loanAmount)!
+        let i = Double(interestAmount)!
         //var MP = Double(monthlyAmount)!
-        var NOP = Double(numberOfPaymnets)!
+        let NOP = Double(numberOfPaymnets)!
         
         
-        var MP = round((LA * (i / 1200)) / (1 - (1 / pow((1 + (i / 1200)), NOP))))
+        let MP = round((LA * (i / 1200)) / (1 - (1 / pow((1 + (i / 1200)), NOP))))
         
         monthly_payment.text = String(MP)
     }
@@ -110,15 +111,15 @@ class LoanViewController: UIViewController {
         guard let loanAmount = loan_amount.text else { return }
         guard let interestAmount = interest.text else { return }
         guard let monthlyAmount = monthly_payment.text else { return }
-        guard let numberOfPaymnets = numberOf_paymnets.text else { return }
+        guard numberOf_paymnets.text != nil else { return }
         
-        var LA = Double(loanAmount)!
-        var i = Double(interestAmount)!
-        var MP = Double(monthlyAmount)!
+        let LA = Double(loanAmount)!
+        let i = Double(interestAmount)!
+        let MP = Double(monthlyAmount)!
         //var NOP = Double(numberOfPaymnets)!
         
         
-        var NOP = round(log(((MP)/(i / 1200)) / ((MP / (i / 1200)) - LA)) / log(1 + i / 1200))
+        let NOP = round(log(((MP)/(i / 1200)) / ((MP / (i / 1200)) - LA)) / log(1 + i / 1200))
         
         numberOf_paymnets.text = String(NOP)
     }

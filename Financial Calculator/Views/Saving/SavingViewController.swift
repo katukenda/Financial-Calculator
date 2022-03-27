@@ -27,32 +27,44 @@ class SavingViewController: UIViewController {
     }
     
     func checkFunction() {
-        if principle_amount.text?.isEmpty == true {
+        if (principle_amount.text?.isEmpty == true && interest.text?.isEmpty == false && future_value.text?.isEmpty == false && numberOf_years.text?.isEmpty == false ){
             getPrincipleAmount()
         }
-        if interest.text?.isEmpty == true {
+      else  if (principle_amount.text?.isEmpty == false && interest.text?.isEmpty == true && future_value.text?.isEmpty == false && numberOf_years.text?.isEmpty == false ){
             getInterest()
         }
-        if future_value.text?.isEmpty == true {
+       else if (principle_amount.text?.isEmpty == false && interest.text?.isEmpty == false && future_value.text?.isEmpty == true && numberOf_years.text?.isEmpty == false ){
             getFutureAmount()
         }
-        if numberOf_years.text?.isEmpty == true {
+       else if (principle_amount.text?.isEmpty == false && interest.text?.isEmpty == false && future_value.text?.isEmpty == false && numberOf_years.text?.isEmpty == true ){
             getDuration()
         }
+       else if (principle_amount.text?.isEmpty == false && interest.text?.isEmpty == false && future_value.text?.isEmpty == false && numberOf_years.text?.isEmpty == false ){
+            let alert = UIAlertController(title: "saving Section", message: "Plase clear one field ", preferredStyle: UIAlertController.Style.alert)
+            // add an action (button)
+            self.present(alert, animated: true, completion: nil)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        }
+        else {
+             let alert = UIAlertController(title: "saving Section", message: "Plase fill all the fields except one ", preferredStyle: UIAlertController.Style.alert)
+             // add an action (button)
+             self.present(alert, animated: true, completion: nil)
+             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+         }
 
     }
     
     func getPrincipleAmount(){
         
-        guard let principleAmount = principle_amount.text else { return }
+        guard principle_amount.text != nil else { return }
         guard let interestAmount = interest.text else { return }
         guard let futureAmount = future_value.text else { return }
         guard let numberOfYears = numberOf_years.text else { return }
         
-        var FV = Double(futureAmount)!
-         var l = Double(interestAmount)!
-        var t = Double(numberOfYears)!
-        var PV = round(FV / (1 + ((l * t) / 100 )))
+        let FV = Double(futureAmount)!
+        let l = Double(interestAmount)!
+        let t = Double(numberOfYears)!
+        let PV = round(FV / (1 + ((l * t) / 100 )))
         
         principle_amount.text = String(PV)
         
@@ -62,30 +74,30 @@ class SavingViewController: UIViewController {
     func getInterest() {
         
         guard let principleAmount = principle_amount.text else { return }
-        guard let interestAmount = interest.text else { return }
+        guard interest.text != nil else { return }
         guard let futureAmount = future_value.text else { return }
         guard let numberOfYears = numberOf_years.text else { return }
         
-        var FV = Double(futureAmount)!
-         var PV = Double(principleAmount)!
-        var t = Double(numberOfYears)!
-        var l = round(((FV / PV) - 1) * ( 100 / t) )
+        let FV = Double(futureAmount)!
+        let PV = Double(principleAmount)!
+        let t = Double(numberOfYears)!
+        let l = round(((FV / PV) - 1) * ( 100 / t) * 100 )
         
         
-        interest.text = String(l)
+        interest.text = String(l / 100)
         
         print("interest")
     }
     func getFutureAmount() {
         guard let principleAmount = principle_amount.text else { return }
         guard let interestAmount = interest.text else { return }
-        guard let futureAmount = future_value.text else { return }
+        guard future_value.text != nil else { return }
         guard let numberOfYears = numberOf_years.text else { return }
         
-        var l = Double(interestAmount)!
-         var PV = Double(principleAmount)!
-        var t = Double(numberOfYears)!
-        var FV = round(PV * (1 + (l * t)/100))
+        let l = Double(interestAmount)!
+        let PV = Double(principleAmount)!
+        let t = Double(numberOfYears)!
+        let FV = round(PV * (1 + (l * t)/100))
         
         future_value.text = String(FV)
         print("Future")
@@ -95,12 +107,12 @@ class SavingViewController: UIViewController {
         guard let principleAmount = principle_amount.text else { return }
         guard let interestAmount = interest.text else { return }
         guard let futureAmount = future_value.text else { return }
-        guard let numberOfYears = numberOf_years.text else { return }
+        guard numberOf_years.text != nil else { return }
         
-        var l = Double(interestAmount)!
-         var PV = Double(principleAmount)!
-        var FV = Double(futureAmount)!
-        var t = round(((FV / PV) - 1) * ( 100 / l) )
+        let l = Double(interestAmount)!
+        let PV = Double(principleAmount)!
+        let FV = Double(futureAmount)!
+        let t = round(((FV / PV) - 1) * ( 100 / l) )
         
         numberOf_years.text = String(t)
         print("Duration")
